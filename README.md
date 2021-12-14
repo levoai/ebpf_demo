@@ -12,6 +12,9 @@
 ### Debian / Ubuntu
 * Other packages: `python3 python3-venv libelf-dev linux-libc-dev zlib1g-dev cmake make curl`
 
+### Manjaro ###
+`run.sh` appears to work "out of the box" without requiring any additional packages.
+
 ## Usage
 `run.sh` will create a temporary directory, download the necessary Python dependencies,
 build and launch the Levo eBPF demo API server and application, and clean up after itself
