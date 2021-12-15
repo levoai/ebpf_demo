@@ -1,5 +1,13 @@
 # Levo.ai's eBPF demonstration application
 
+## Note
+If you run into any problems or have any suggested edits to this README, 
+especially system requirements for Linux distributions not already listed,
+Please file an issue against this project in GitHub.
+
+Questions are also welcome as GitHub issues.  And as we find time, we will
+answer them and collect the most common ones into a `FAQ.md`.
+
 ## System requirements
 ### General
 * Root access.  (Most eBPF programs cannot be loaded by unprivileged users.)
@@ -9,8 +17,8 @@
   * Clang version 10 or newer
   * GCC version 10 or newer
 
-### Debian / Ubuntu
-* Other packages: `python3 python3-venv libelf-dev linux-libc-dev zlib1g-dev cmake make curl`
+### Debian / Ubuntu / Kali
+* Other packages: `cmake curl git libelf-dev libc6-dev linux-libc-dev make python3 python3-venv zlib1g-dev`
 
 ### Manjaro ###
 `run.sh` appears to work "out of the box" without requiring any additional packages.
