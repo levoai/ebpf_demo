@@ -14,6 +14,8 @@
 #    along with this program; if not, write to the Free Software Foundation,
 #    Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
 
+include(levo_helpers.cmake)
+
 cmake_minimum_required(VERSION 3.18)
 project(
         ebpf_demo
@@ -22,6 +24,8 @@ project(
         LANGUAGES C
 )
 set(CMAKE_C_STANDARD 99)
+
+
 
 if(CMAKE_BINARY_DIR STREQUAL CMAKE_SOURCE_DIR)
     message(FATAL_ERROR
@@ -32,12 +36,34 @@ if(CMAKE_BINARY_DIR STREQUAL CMAKE_SOURCE_DIR)
             )
 endif()
 
-if(NOT ${CACHE}SUBMODULES_INITIALIZED)
-    execute_process(
-            COMMAND git submodule update --init --force --recursive
-            WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+# Figure out whether we are (probably) in a git clone, or building from an
+# unpacked tarball or zipfile...
+execute_process(
+        COMMAND git status
+        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+        RESULT_VARIABLE GIT_STATUS_EXIT_CODE
+)
+
+if(GIT_STATUS_EXIT_CODE EQUAL 0)
+    if(NOT ${CACHE}SUBMODULES_INITIALIZED)
+        do_or_die(
+                COMMAND git submodule update --init --force --recursive
+                WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+        )
+        set(SUBMODULES_INITIALIZED TRUE CACHE BOOL "Project git submodules already initialized" FORCE)
+    endif()
+else()
+    set(LIBBPF_GIT_TAG v0.6.1)
+    do_or_die(
+            COMMAND git clone https://github.com/libbpf/libbpf.git
+            WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}/external"
+            DESCRIPTION "Cloning libbpf to '${CMAKE_SOURCE_DIR}/external'"
     )
-    set(SUBMODULES_INITIALIZED TRUE CACHE BOOL "Project git submodules already initialized" FORCE)
+    do_or_die(
+            COMMAND git checkout ${LIBBPF_GIT_TAG}
+            WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}/external/libbpf"
+            DESCRIPTION "Checking out libbpf git tag: ${LIBBPF_GIT_TAG}"
+    )
 endif()
 
 cmake_host_system_information(RESULT CORE_COUNT QUERY NUMBER_OF_PHYSICAL_CORES)
