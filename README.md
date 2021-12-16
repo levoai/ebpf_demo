@@ -44,3 +44,19 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software Foundation,
 Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301  USA
+
+## References
+### eBPF
+* https://man7.org/linux/man-pages/man2/bpf.2.html
+* https://man7.org/linux/man-pages/man7/bpf-helpers.7.html
+### `libbpf`
+* https://github.com/libbpf/libbpf/
+* https://github.com/libbpf/libbpf/wiki/Libbpf:-the-road-to-v1.0
+* https://github.com/libbpf/libbpf/wiki/Libbpf-1.0-migration-guide
+* https://github.com/libbpf/libbpf-bootstrap
+* https://nakryiko.com/posts/bpf-core-reference-guide/
+### CMake
+* https://cmake.org/cmake/help/latest/index.html
+  * https://cmake.org/cmake/help/latest/manual/cmake-buildsystem.7.html
+  * https://cmake.org/cmake/help/latest/manual/cmake-commands.7.html
+  * https://cmake.org/cmake/help/latest/manual/cmake-variables.7.html
