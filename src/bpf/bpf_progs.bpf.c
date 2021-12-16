@@ -69,10 +69,18 @@ int PROGNAME_HANDLE_SYS_EXIT_SENDTO(struct sys_exit_sendto_context *ctx){
   uint64_t tgid_pid = bpf_get_current_pid_tgid();
   void **buf_ptr = bpf_map_lookup_elem(&syscall_enter_exit_correlation_map, &tgid_pid);
   if(!buf_ptr)
-    return 0;ssize_t send_len;
+    return 0;
+  ssize_t send_len;
   bpf_probe_read((void *)&send_len, sizeof(send_len), &ctx->ret);
-  if(send_len < 0)
-    goto bail;
+//  if(send_len < 0)
+//    goto bail;
+  asm volatile goto (
+      "if %[send_len] <= 0 goto bail"
+      :
+      : [send_len] "r" (send_len)
+      :
+      : bail
+  );
   size_t u_send_len = send_len;
   int zero = 0;
   void *scratch_map_ptr = bpf_map_lookup_elem(&data_scratch_map, &zero);
